@@ -51,7 +51,7 @@ recipe_processing/
 3. Run the main function:
 
     ```bash
-    python recipe_processing.py
+    python main.py
     ```
 
 ## Functionality
