@@ -56,18 +56,18 @@ recipe_processing/
 
 ## Functionality
 
-### `download_recipes_file(url, destination)`
+#### `download_recipes_file(url, destination)`
 
 Downloads a file from a given URL and saves it to the specified destination.
 
-### `fix_json_format_in_place(file_path)`
+#### `fix_json_format_in_place(file_path)`
 
 Formats downloaded JSON data for correct parsing.
 
-### `convert_time_to_minutes(row)`
+#### `convert_time_to_minutes(row)`
 
 Converts PT standard times to minutes.
 
-### `process_recipes(input_file, chilies_file, results_file)`
+#### `process_recipes(input_file, chilies_file, results_file)`
 
 Processes recipes from a JSON file, extracts information about chili recipes, and saves the results.
