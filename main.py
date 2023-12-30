@@ -1,20 +1,8 @@
 import requests
 import pandas as pd
-import logging
+from utils.logger import get_logger
 
-# Configure logging to output to both console and file
-logging.basicConfig(filename='recipe_processing.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-
-# Create a console handler and set the level to INFO
-console_handler = logging.StreamHandler()
-console_handler.setLevel(logging.INFO)
-
-# Create a formatter and attach it to the console handler
-formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-console_handler.setFormatter(formatter)
-
-# Add the console handler to the root logger
-logging.getLogger('').addHandler(console_handler)
+log = get_logger(__name__)
 
 def download_recipes_file(url, destination):
     """Download a file from a given URL and save it to the specified destination.
@@ -33,12 +21,12 @@ def download_recipes_file(url, destination):
         with open(destination, 'wb') as file:
             file.write(response.content)
 
-        logging.info(f"File downloaded successfully to {destination}")
+        log.info(f"File downloaded successfully to {destination}")
 
         fix_json_format_in_place(destination)
 
     except requests.exceptions.RequestException as e:
-        logging.error(f"Error downloading file: {e}")
+        log.error(f"Error downloading file: {e}")
         raise
 
 def fix_json_format_in_place(file_path):
@@ -61,10 +49,10 @@ def fix_json_format_in_place(file_path):
         with open(file_path, 'w') as outfile:
             outfile.write(json_array)
 
-        logging.info(f"JSON file formatted successfully: {file_path}")
+        log.info(f"JSON file formatted successfully: {file_path}")
 
     except Exception as e:
-        logging.error(f"Error fixing JSON file format: {e}")
+        log.error(f"Error fixing JSON file format: {e}")
         raise
 
 def convert_time_to_minutes(row):
@@ -96,7 +84,7 @@ def convert_time_to_minutes(row):
         return total_minutes
 
     except Exception as e:
-        logging.error(f"Error extracting minutes from duration: {e}")
+        log.error(f"Error extracting minutes from duration: {e}")
         return None  
 
 def process_recipes(input_file, chilies_file, results_file):
@@ -112,7 +100,7 @@ def process_recipes(input_file, chilies_file, results_file):
     """
     try:
         recipes_df = pd.read_json(input_file)
-        logging.info(f"Read {len(recipes_df)} recipes from {input_file}")
+        log.info(f"Read {len(recipes_df)} recipes from {input_file}")
 
         # Extract recipes with "Chilies" in ingredients
         target = ['chilies', 'chiles', 'chili', 'chilli', 'chile']
@@ -129,7 +117,7 @@ def process_recipes(input_file, chilies_file, results_file):
 
         chilies_df = chilies_df.drop_duplicates()
         chilies_df.to_csv(chilies_file, sep='|', index=False)
-        logging.info(f"Chilies data saved to {chilies_file}")
+        log.info(f"Chilies data saved to {chilies_file}")
 
         # Calculate average total_time by difficulty
         results_df = chilies_df.groupby('difficulty')['totalTime'].mean().reset_index()
@@ -137,10 +125,10 @@ def process_recipes(input_file, chilies_file, results_file):
 
         # Save Results.csv
         results_df.to_csv(results_file, sep='|', index=False, header=None)
-        logging.info(f"Results data saved to {results_file}")
+        log.info(f"Results data saved to {results_file}")
 
     except Exception as e:
-        logging.error(f"Error processing recipes: {e}")
+        log.error(f"Error processing recipes: {e}")
         raise
 
 if __name__ == "__main__":
@@ -154,4 +142,4 @@ if __name__ == "__main__":
         process_recipes(input_file, chilies_file, results_file)
 
     except Exception as e:
-        logging.exception(f"An unexpected error occurred: {e}")
+        log.exception(f"An unexpected error occurred: {e}")
