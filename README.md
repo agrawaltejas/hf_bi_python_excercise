@@ -5,7 +5,7 @@
 This project is designed to process recipe data from a JSON file, extract information about chili recipes, and save the results. The project includes functions to download a file from a given URL, format the downloaded JSON data, convert time durations to minutes, and process recipes to create CSV files with relevant information.
 
 ## Project Structure
-
+```bash
 recipe_processing/
 │
 ├── main.py # Main script containing project functions
@@ -26,7 +26,7 @@ recipe_processing/
 ├── recipe_processing.log # Logs will be saved in this log file as well.
 │
 └── README.md # Project documentation
-
+```
 
 ## Technologies Used
 
