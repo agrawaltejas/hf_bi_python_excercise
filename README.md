@@ -16,7 +16,7 @@ recipe_processing/
 │ ├── bi_recipes.json # Input JSON file
 |
 │── recipes-etl # Output files for results
-│ └── Results.csv # Output file for results    
+│ └── Chillies.csv # Output file for results    
 | └── Results.csv # Output file for results           
 |
 ├── test_data/ # test data files (if any)
